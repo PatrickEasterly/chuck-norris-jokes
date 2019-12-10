@@ -43,3 +43,29 @@ Note, you will need to update your `rendersJokeToPage` function. Consider creati
 ## Create a `fetchMultiple` button
 
 Create a button and event listeners for a button that will run the `fetchMultipleJokes` function when it is clicked.
+
+# Large exercises
+
+## Display a list of categories
+
+This address returns an array of category names: `https://api.chucknorris.io/jokes/categories`
+
+For each item in the list, add the category name as list items to an unordered list.
+
+Display the unordered list on the page.
+
+## Add a click handler for each category
+
+When the user clicks one of the list items, it should save the category name to a variable.
+
+Display the current category on the page in an `h2` element before/above the list of categories.
+
+## Use the category choice
+
+After the user chooses a category, clear out any existing jokes.
+
+When they click a button to get one joke or multiple jokes, use the category name as part of the address.
+
+The format is: `https://api.chucknorris.io/jokes/random?category={category}`
+
+For example, for jokes about food, the category is `"food"` and the address is `https://api.chucknorris.io/jokes/random?category=food`

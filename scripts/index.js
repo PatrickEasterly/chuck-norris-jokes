@@ -1,7 +1,9 @@
 const jokeServerAddress = "https://api.chucknorris.io/jokes/random"
 const jokeContainer = document.querySelector(".jokeContainer");
+const buttons = document.querySelector(".buttons");
 
 function convertToJson(response) {
+    // console.log(response)
     return response.json();
 }
 
@@ -22,7 +24,7 @@ function makeButton() {
     butt.type = "button";
     butt.textContent = "New Joke";
     butt.addEventListener("click", fetchSingular)
-    document.body.appendChild(butt);
+    buttons.appendChild(butt);
 }
 
 function makeMultiButton() {
@@ -30,7 +32,7 @@ function makeMultiButton() {
     butt.type = "button";
     butt.textContent = "Multiple new jokes";
     butt.addEventListener("click", fetchMultiple)
-    document.body.appendChild(butt);
+    buttons.appendChild(butt);
 }
 
 // function clearButton() {
@@ -47,7 +49,7 @@ function clearJokes() {
 
 function fetchJoke() {
     fetch(jokeServerAddress)
-        .then(r=>r.json())
+        .then(convertToJson)
         .then(extractJoke)
         .then(rendersJokeToPage)
 }
@@ -70,4 +72,24 @@ makeButton()
 // clearButton()
 fetchJoke()
 
+///      large exercises 
+//      Display a list of categories
 
+const jokeCategories = document.querySelector(".jokeCategories");
+
+function arrMapper(item) {
+    let li = document.createElement("li");
+    li.textContent = item;
+    // console.log(li);
+    jokeCategories.appendChild(li);
+}
+
+const categories = `https://api.chucknorris.io/jokes/categories`;
+
+function displayCategories() {
+    fetch(categories)
+    .then(convertToJson)
+    .then(r=>r.map(arrMapper))
+}
+
+displayCategories()
