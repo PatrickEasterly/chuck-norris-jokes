@@ -1,6 +1,7 @@
 const jokeServerAddress = "https://api.chucknorris.io/jokes/random"
 const jokeContainer = document.querySelector(".jokeContainer");
 const buttons = document.querySelector(".buttons");
+let category;
 
 function convertToJson(response) {
     // console.log(response)
@@ -30,7 +31,7 @@ function makeButton() {
 function makeMultiButton() {
     const butt = document.createElement("button");
     butt.type = "button";
-    butt.textContent = "Multiple new jokes";
+    butt.textContent = "LOTS of jokes";
     butt.addEventListener("click", fetchMultiple)
     buttons.appendChild(butt);
 }
@@ -48,10 +49,19 @@ function clearJokes() {
 }
 
 function fetchJoke() {
-    fetch(jokeServerAddress)
-        .then(convertToJson)
-        .then(extractJoke)
-        .then(rendersJokeToPage)
+    if(category == undefined){
+        fetch(jokeServerAddress)
+            .then(convertToJson)
+            .then(extractJoke)
+            .then(rendersJokeToPage)
+    } else {
+        let theURL = `https://api.chucknorris.io/jokes/random?category=${category}`
+        // console.log(theURL);
+        fetch(theURL)
+            .then(convertToJson)
+            .then(extractJoke)
+            .then(rendersJokeToPage)
+    }
 }
 function fetchSingular() {
     clearJokes();
@@ -61,14 +71,15 @@ function fetchSingular() {
 function fetchMultiple() {
     clearJokes();
     let count = 0; 
-    while (count < 4) {
+    let jokesArray = [];
+    while (count < 10) {
         fetchJoke();
         count += 1;
     }
 }
 
-makeMultiButton()
 makeButton()
+makeMultiButton()
 // clearButton()
 fetchJoke()
 
@@ -76,20 +87,53 @@ fetchJoke()
 //      Display a list of categories
 
 const jokeCategories = document.querySelector(".jokeCategories");
+const catTitle = document.querySelector(".catTitle");
 
 function arrMapper(item) {
     let li = document.createElement("li");
     li.textContent = item;
+    li.addEventListener("click", catSetter)
     // console.log(li);
     jokeCategories.appendChild(li);
 }
 
-const categories = `https://api.chucknorris.io/jokes/categories`;
+const categoriesList = `https://api.chucknorris.io/jokes/categories`;
+
+let categoriesArray;
+const stealObject = x => {
+    categoriesArray = x;
+    return x;
+}
 
 function displayCategories() {
-    fetch(categories)
+    fetch(categoriesList)
     .then(convertToJson)
+    .then(stealObject)
     .then(r=>r.map(arrMapper))
 }
 
 displayCategories()
+
+//      Click handlers
+
+function catSetter(catObj) {
+    category = this.textContent;
+    catH2Maker(category);
+}
+
+function catH2Maker(cat) {
+    let h2 = document.createElement("h2");
+    h2.textContent = `${cat}`
+    // console.log(h2)
+    catTitle.textContent = "";
+    catTitle.appendChild(h2);
+}
+
+function undefineMe() {
+    category = undefined;
+    catTitle.textContent = "";
+    let h2 = document.createElement("h2");
+    h2.textContent = " ";
+    catTitle.appendChild(h2);
+}
+
